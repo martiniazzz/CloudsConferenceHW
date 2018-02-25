@@ -58,18 +58,22 @@ public class ConferenceApi {
         // TODO 2
         // If the user is not logged in, throw an UnauthorizedException
 
-        if(user==null) throw new UnauthorizedException("Missing user");
+        if(user==null)
+            throw new UnauthorizedException("Missing user");
 
         // TODO 1
         // Set the teeShirtSize to the value sent by the ProfileForm, if sent
         // otherwise leave it as the default value
-        if(form!=null)  teeShirtSize=form.getTeeShirtSize();
+        if(form!=null)
+            teeShirtSize=form.getTeeShirtSize();
 
         // TODO 1
         // Set the displayName to the value sent by the ProfileForm, if sent
         // otherwise set it to null
-        if(form!=null) displayName=form.getDisplayName();
-        else displayName=null;
+        if(form!=null)
+            displayName=form.getDisplayName();
+        else
+            displayName=null;
 
 
         // TODO 2
@@ -82,14 +86,21 @@ public class ConferenceApi {
         // If the displayName is null, set it to default value based on the user's email
         // by calling extractDefaultDisplayNameFromEmail(...)
 
-        if(displayName==null) displayName=extractDefaultDisplayNameFromEmail(mainEmail);
+        if(displayName==null)
+            displayName=extractDefaultDisplayNameFromEmail(mainEmail);
 
         // Create a new Profile entity from the
         // userId, displayName, mainEmail and teeShirtSize
-        Profile profile = new Profile(userId, displayName, mainEmail, teeShirtSize);
+        //Profile profile = new Profile(userId, displayName, mainEmail, teeShirtSize);
 
         // TODO 3 (In Lesson 3)
         // Save the Profile entity in the datastore
+        Profile profile = getProfile(user);
+        if (profile == null)
+            profile = new Profile(userId, displayName, mainEmail, teeShirtSize);
+        else
+            profile.update(displayName,teeShirtSize);
+
 
         // Return the profile
         return profile;
@@ -113,9 +124,9 @@ public class ConferenceApi {
 
         // TODO
         // load the Profile Entity
-        String userId = ""; // TODO
-        Key key = null; // TODO
-        Profile profile = null; // TODO load the Profile entity
+        String userId = user.getUserId();// TODO
+        Key key = Key.create(Profile.class,userId);// TODO
+        Profile profile = (Profile)ofy().load().key(key).now();// TODO load the Profile entity
         return profile;
     }
 }
