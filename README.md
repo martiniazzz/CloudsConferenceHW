@@ -31,4 +31,4 @@ App Engine application for the Udacity training course.
 [3]: https://developers.google.com/appengine/docs/java/endpoints/
 [4]: https://console.developers.google.com/
 [5]: https://localhost:8080/
-[6]: https://developers.google.com/appengine/docs/java/tools/maven# CloudsConferenceHW
+[6]: https://developers.google.com/appengine/docs/java/tools/maven
