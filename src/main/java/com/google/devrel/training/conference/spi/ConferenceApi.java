@@ -10,6 +10,8 @@ import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.response.ConflictException;
 import com.google.api.server.spi.response.ForbiddenException;
 import com.google.api.server.spi.response.UnauthorizedException;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.users.User;
 import com.google.devrel.training.conference.Constants;
 import com.google.devrel.training.conference.domain.*;
@@ -479,6 +481,18 @@ public class ConferenceApi {
             }
         });
         return result;
+    }
+
+
+    @ApiMethod(name="getAnnouncement", path = "announcement", httpMethod = HttpMethod.GET)
+    public Announcement getAnnouncement(){
+        //TODO GET announcement from memcache by key and if it exist return it
+        MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
+        Object message = memcacheService.get(Constants.MEMCACHE_ANNOUNCEMENTS_KEY);
+        if (message != null) {
+            return new Announcement(message.toString());
+        }
+        return null;
     }
 
 }
